@@ -257,7 +257,7 @@ class BasePayment(models.Model):
     def is_recurring(self) -> bool:
         return self.get_subscription() is not None
 
-    def autocomplete_with_subscription(self):
+    def auto_complete_recurring(self):
         """
         Complete the payment with subscription
         Used by providers, that use server initiated subscription workflow
@@ -265,7 +265,7 @@ class BasePayment(models.Model):
         Throws RedirectNeeded if there is problem with the payment that needs to be solved by user
         """
         provider = provider_factory(self.variant)
-        provider.autocomplete_with_subscription(self)
+        return provider.auto_complete_recurring(self)
 
     def capture(self, amount=None):
         """Capture a pre-authorized payment.
