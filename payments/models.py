@@ -3,8 +3,6 @@ from __future__ import annotations
 import json
 import enum
 from typing import Iterable
-from typing import Optional
-from typing import Union
 from uuid import uuid4
 
 from django.db import models
@@ -241,12 +239,13 @@ class BasePayment(models.Model):
 
     def get_payment_url(self) -> str:
         """
-        Get the url the view that handles the payment (payment_details() in documentation)
+        Get the url the view that handles the payment
+        (payment_details() in documentation)
         For now used only by PayU provider to redirect users back to CVV2 form
         """
         raise NotImplementedError()
 
-    def get_subscription(self) -> Optional[BaseSubscription]:
+    def get_subscription(self) -> BaseSubscription | None:
         """
         Returns subscription object associated with this payment
         or None if the payment is not recurring
