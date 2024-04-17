@@ -155,14 +155,14 @@ class BasicProvider:
         Throws RedirectNeeded if there is problem with the payment
         that needs to be solved by user.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def cancel_subscription(self, subscription):
         """
         Cancel subscription
         Used by providers, that use provider initiated cancellation workflow
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def capture(self, payment, amount=None):
         raise NotImplementedError

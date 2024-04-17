@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import json
 import enum
+import json
 from typing import Iterable
 from uuid import uuid4
 
@@ -77,10 +77,10 @@ class BaseSubscription(models.Model):
         self.subscribtion_data = kwargs
 
     def get_period(self) -> int:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def get_unit(self) -> TimeUnit:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def cancel(self):
         """
@@ -249,7 +249,7 @@ class BasePayment(models.Model):
         (payment_details() in documentation)
         For now used only by PayU provider to redirect users back to CVV2 form
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def get_subscription(self) -> BaseSubscription | None:
         """
