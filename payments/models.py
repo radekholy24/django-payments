@@ -57,6 +57,11 @@ class BaseSubscription(models.Model):
         null=True,
         blank=True,
     )
+    subscribtion_data = models.JSONField(
+        _("subscription data"),
+        help_text=_("Provider-specific data associated with subscription"),
+        default=dict,
+    )
 
     class TimeUnit(enum.Enum):
         year = "year"
@@ -69,6 +74,7 @@ class BaseSubscription(models.Model):
         Kwargs can contain provider-specific values
         """
         self.token = token
+        self.subscribtion_data = kwargs
 
     def get_period(self) -> int:
         raise NotImplementedError()
