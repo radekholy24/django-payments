@@ -299,9 +299,9 @@ class BasePayment(models.Model):
                 raise ValueError(
                     "Refund amount can not be greater then captured amount"
                 )
-            provider = provider_factory(self.variant, self)
-            amount = provider.refund(self, amount)
-            self.captured_amount -= amount
+        provider = provider_factory(self.variant, self)
+        amount = provider.refund(self, amount)
+        self.captured_amount -= amount
         if self.captured_amount == 0 and self.status != PaymentStatus.REFUNDED:
             self.change_status(PaymentStatus.REFUNDED)
         self.save()
