@@ -1,5 +1,6 @@
 import enum
 import json
+import logging
 from typing import Iterable
 from typing import Optional
 from typing import Union
@@ -14,6 +15,9 @@ from . import FraudStatus
 from . import PaymentStatus
 from . import PurchasedItem
 from .core import provider_factory
+
+
+logger = logging.getLogger(__name__)
 
 
 class PaymentAttributeProxy:
@@ -301,8 +305,12 @@ class BasePayment(models.Model):
                 )
         provider = provider_factory(self.variant, self)
         amount = provider.refund(self, amount)
+        # If the initial amount is None, the check above has no chance to check that the actual amount is greater than the captured amount before actually performing the refund.
+        # But since the refund has been performed already, raising an exception would just cause inconsistencies. Thus, logging an error.
+        if amount > self.captured_amount:
+            logger.error("Refund amount of payment %s greater than captured amount: %f > %f", self.id, amount, self.captured_amount)
         self.captured_amount -= amount
-        if self.captured_amount == 0 and self.status != PaymentStatus.REFUNDED:
+        if self.captured_amount <= 0 and self.status != PaymentStatus.REFUNDED:
             self.change_status(PaymentStatus.REFUNDED)
         self.save()
 
