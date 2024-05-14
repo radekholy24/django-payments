@@ -281,7 +281,7 @@ class PaypalProvider(BasicProvider):
         payment.attrs.payer_info = executed_payment["payer"]["payer_info"]
         if self._capture:
             payment.captured_amount = payment.total
-            payment.objects.filter(pk=payment.pk).update(captured_amount=payment.captured_amount)
+            type(payment).objects.filter(pk=payment.pk).update(captured_amount=payment.captured_amount)
             payment.change_status(PaymentStatus.CONFIRMED)
         else:
             payment.change_status(PaymentStatus.PREAUTH)
@@ -303,7 +303,7 @@ class PaypalProvider(BasicProvider):
             return redirect(failure_url)
         if subscription_data["status"] == "ACTIVE":
             payment.captured_amount = payment.total
-            payment.objects.filter(pk=payment.pk).update(captured_amount=payment.captured_amount)
+            type(payment).objects.filter(pk=payment.pk).update(captured_amount=payment.captured_amount)
             payment.change_status(PaymentStatus.CONFIRMED)
             return redirect(success_url)
         payment.change_status(PaymentStatus.REJECTED)
